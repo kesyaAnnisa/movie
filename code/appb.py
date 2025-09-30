@@ -473,13 +473,18 @@ if movie_title and len(movie_title.strip()) > 0:
             st.error("❌ No valid reviews found for processing.")
         else:
             summary = create_objective_summary(cleaned_reviews, summarizer, len(cleaned_reviews))
+
+            # buang awalan "300" kalau ada
+            if summary.startswith("300"):
+                summary = summary[3:].strip()
+
             st.markdown("### 🎯 Audience Analysis")
             st.markdown(f"<div style='background: rgba(76, 175, 80, 0.15); padding: 10px 14px; border-radius: 8px; border-left: 4px solid #4CAF50; border: 1px solid #ddd; margin: 5px 0 8px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'><h3 style='color: #4CAF50; font-size: 18px; margin: 0 0 2px 0;'>📊 Summary from {len(cleaned_reviews)} Reviews</h3><div style='font-size: 14px; line-height: 1.35; text-align: justify; color: black; white-space: pre-line; margin: 0;'>{summary}</div></div>", unsafe_allow_html=True)
-            
+        
+
             st.markdown("### 💬 Review Keywords Analysis")
-            st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
-            
             col_wc1, col_wc2 = st.columns([2, 1])
+
             
             with col_wc1:
                 wordcloud = generate_wordcloud(all_reviews, max_words=50)
